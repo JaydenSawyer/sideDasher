@@ -14,46 +14,25 @@ import GameplayKit
 
 
 class GameViewController: UIViewController {
-    
     @IBOutlet weak var deathOutlet: UILabel!
     var play: GameScene!
-    
     override func viewDidLoad() {
-        
         super.viewDidLoad()
-        
-        
-        
         let value = UIInterfaceOrientation.landscapeLeft.rawValue
-        
         UIDevice.current.setValue(value, forKey: "orientation")
         
         
-        
-        
-        
         if let view = self.view as! SKView? {
-            
             // Load the SKScene from 'GameScene.sks'
-            
             if let scene = SKScene(fileNamed: "GameScene") {
                 
                 // Set the scale mode to scale to fit the window
-                
                 scene.scaleMode = .aspectFill
                 
-                
-                
                 // getting a refrance to game scene.
-                
                 play = scene as? GameScene
                 
-                
-                
-                
-                
                 // Present the scene
-                
                 view.presentScene(scene)
                 
             }
@@ -61,11 +40,7 @@ class GameViewController: UIViewController {
             
             
             view.ignoresSiblingOrder = true
-            
-            
-            
             view.showsFPS = true
-            
             view.showsNodeCount = true
             
         }
@@ -75,28 +50,21 @@ class GameViewController: UIViewController {
     
     
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
-        
         return .landscapeRight
-        
-        
-        
     }
     
     
     
     override var prefersStatusBarHidden: Bool {
-        
         return true
+    }
+    @IBAction func jump(_ sender: UIButton) {
+        print("it works ")
+        play.ball.physicsBody?.velocity.dy = 1000
         
     }
     
-    @IBAction func jumpButton(_ sender: Any) {
-        
-        
-        
-        play.ball.physicsBody?.velocity.dy = 1000
-        
-        
-        
-    }
+
+    
+    
 }
