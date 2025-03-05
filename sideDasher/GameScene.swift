@@ -23,22 +23,28 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         ball = (self.childNode(withName: "ball") as! SKSpriteNode)
         physicsWorld.contactDelegate = self
         death = (self.childNode(withName: "spike") as! SKSpriteNode)
+        if let musicURL = Bundle.main.url(forResource: "music", withExtension: "m4a") {
+            var backgroundMusic = SKAudioNode(url: )
+          addChild(backgroundMusic)
+        }
     }
     
     func reset() {
-        ball.position = CGPoint(x: -571.837, y: 120.964 )
+        var action = SKAction.move(to: CGPoint(x: -571.837, y: 120.964 ), duration: 0)
+        ball.run(action)
+        print("ball reset??")
+        ball.physicsBody?.velocity.dx = 375
     }
 
     func didBegin(_ contact: SKPhysicsContact) {
         
-        if contact.bodyA.node?.name == "spike" {
+        if contact.bodyA.node?.name == "ball" && contact.bodyB.node?.name == "spike" {
             reset()
             print("collision happened")
-        } else if contact.bodyB.node?.name == "spike" {
+        } else if contact.bodyA.node?.name == "spike" && contact.bodyB.node?.name == "ball"{
             reset()
             print("collision happened")
         }
-          
     }
 
     override func update(_ currentTime: TimeInterval) {
