@@ -14,7 +14,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     var ball: SKSpriteNode!
     let cam = SKCameraNode()
     var death: SKSpriteNode!
-    
+    var backgroundMusic: SKAudioNode
 
 
 
@@ -23,10 +23,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         ball = (self.childNode(withName: "ball") as! SKSpriteNode)
         physicsWorld.contactDelegate = self
         death = (self.childNode(withName: "spike") as! SKSpriteNode)
-        if let musicURL = Bundle.main.url(forResource: "music", withExtension: "m4a") {
-            var backgroundMusic = SKAudioNode(url: )
-          addChild(backgroundMusic)
-        }
+        
     }
     
     func reset() {
