@@ -14,6 +14,7 @@ import GameplayKit
 
 
 class GameViewController: UIViewController {
+    @IBOutlet weak var attemptCounter: UILabel!
     @IBOutlet weak var deathOutlet: UILabel!
     var play: GameScene!
     override func viewDidLoad() {
