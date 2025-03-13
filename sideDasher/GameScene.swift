@@ -8,50 +8,66 @@
 import SpriteKit
 import GameplayKit
 
-
-
-class GameScene: SKScene, SKPhysicsContactDelegate{
+class GameScene: SKScene, SKPhysicsContactDelegate {
     var ball: SKSpriteNode!
     let cam = SKCameraNode()
     var death: SKSpriteNode!
-    var backgroundMusic: SKAudioNode!
-
-
+    var gameMusicManager = GameMusicManager()
+    var canJump = true
+    var gameViewController: GameViewController?
+    var level1End = 8640
+    var deaths = 0
 
     override func didMove(to view: SKView) {
         self.camera = cam
         ball = (self.childNode(withName: "ball") as! SKSpriteNode)
         physicsWorld.contactDelegate = self
         death = (self.childNode(withName: "spike") as! SKSpriteNode)
-        if let musicURL = Bundle.main.url(forResource: "music", withExtension: "m4a") {
-            backgroundMusic = SKAudioNode(url: musicURL)
-            addChild(backgroundMusic)
-        }
+        
+        gameMusicManager.playBackgroundMusic(filename: "music.m4a")
     }
     
     func reset() {
-        var action = SKAction.move(to: CGPoint(x: -571.837, y: 120.964 ), duration: 0)
+        let action = SKAction.move(to: CGPoint(x: -571.837, y: 120.964), duration: 0)
         ball.run(action)
-        print("ball reset??")
         ball.physicsBody?.velocity.dx = 375
         
+        deaths += 1
+        gameViewController?.deathOutlet.text = "Deaths: \(deaths)"
+        gameViewController?.attempts += 1
+        gameViewController?.attemptCounter.text = "Attempts: \(gameViewController?.attempts ?? 0)"
     }
 
     func didBegin(_ contact: SKPhysicsContact) {
-        
         if contact.bodyA.node?.name == "ball" && contact.bodyB.node?.name == "spike" {
             reset()
-            print("collision happened")
-        } else if contact.bodyA.node?.name == "spike" && contact.bodyB.node?.name == "ball"{
+        } else if contact.bodyA.node?.name == "spike" && contact.bodyB.node?.name == "ball" {
             reset()
-            print("collision happened")
+        }
+        
+        if (contact.bodyA.node?.name == "ball" && contact.bodyB.node?.name == "block") ||
+           (contact.bodyA.node?.name == "block" && contact.bodyB.node?.name == "ball") {
+            canJump = true
         }
     }
 
     override func update(_ currentTime: TimeInterval) {
-        // Called before each frame is rendered
-        cam.position.x =  ball.position.x + 300
-
-    }
+        cam.position.x = ball.position.x + 300
+        
+        if ball.physicsBody?.velocity.dy == 0 {
+            canJump = true
+        }
+       
+           
+        }
     
+
+    
+    func jump() {
+        if canJump {
+            ball.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 425))
+            canJump = false
+        }
+    }
 }
+
