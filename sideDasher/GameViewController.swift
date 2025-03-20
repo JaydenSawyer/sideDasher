@@ -21,21 +21,36 @@ class GameViewController: UIViewController {
         let value = UIInterfaceOrientation.landscapeLeft.rawValue
         UIDevice.current.setValue(value, forKey: "orientation")
         
+        
+        presentHomeScreen()
+        
         if let view = self.view as! SKView? {
-            
-            if let scene = SKScene(fileNamed: "GameScene") {
-                scene.scaleMode = .aspectFill
-                play = scene as? GameScene
-                
-                
-                play.gameViewController = self
-                
-                view.presentScene(scene)
-            }
-            
             view.ignoresSiblingOrder = true
             view.showsFPS = true
             view.showsNodeCount = true
+        }
+    }
+    
+    func presentHomeScreen() {
+        if let view = self.view as! SKView? {
+            if let scene = HomeScreen(fileNamed: "HomeScreen") {
+                scene.scaleMode = .aspectFill
+                scene.gvc = self
+                view.presentScene(scene)
+            }
+        }
+    }
+    
+    func presentScene(named sceneName: String) {
+        if let view = self.view as! SKView? {
+            if let scene = SKScene(fileNamed: sceneName) {
+                scene.scaleMode = .aspectFill
+                if let gameScene = scene as? GameScene {
+                    gameScene.gameViewController = self
+                    self.play = gameScene
+                }
+                view.presentScene(scene)
+            }
         }
     }
     
@@ -47,9 +62,10 @@ class GameViewController: UIViewController {
         return true
     }
     
-    @IBAction func jump(_ sender: UIButton) {
+    @IBAction func jumpButton(_ sender: Any) {
         print("Jump button pressed")
-        play.jump()
+        if let play = play {
+            play.jump()
+        }
     }
-    
 }

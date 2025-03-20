@@ -5,18 +5,14 @@
 //  Created by JAYDEN SAWYER on 3/14/25.
 //
 
-import Foundation
 import SpriteKit
 
 class Button: SKSpriteNode {
-    var action: () -> Void = {}
-
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-        self.isUserInteractionEnabled = true
-    }
-
-    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        action()
+    var action: (() -> Void)?
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesBegan(touches, with: event)
+        
+        action?()
     }
 }

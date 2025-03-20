@@ -12,19 +12,16 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var ball: SKSpriteNode!
     let cam = SKCameraNode()
     var death: SKSpriteNode!
-    var gameMusicManager = GameMusicManager()
     var canJump = true
     var gameViewController: GameViewController?
     var level1End = 8640
     var deaths = 0
-
+    
     override func didMove(to view: SKView) {
         self.camera = cam
         ball = (self.childNode(withName: "ball") as! SKSpriteNode)
         physicsWorld.contactDelegate = self
         death = (self.childNode(withName: "spike") as! SKSpriteNode)
-        
-        gameMusicManager.playBackgroundMusic(filename: "music.m4a")
     }
     
     func reset() {
@@ -37,7 +34,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         gameViewController?.attempts += 1
         gameViewController?.attemptCounter.text = "Attempts: \(gameViewController?.attempts ?? 0)"
     }
-
+    
     func didBegin(_ contact: SKPhysicsContact) {
         if contact.bodyA.node?.name == "ball" && contact.bodyB.node?.name == "spike" {
             reset()
@@ -46,28 +43,23 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
         
         if (contact.bodyA.node?.name == "ball" && contact.bodyB.node?.name == "block") ||
-           (contact.bodyA.node?.name == "block" && contact.bodyB.node?.name == "ball") {
+            (contact.bodyA.node?.name == "block" && contact.bodyB.node?.name == "ball") {
             canJump = true
         }
     }
-
+    
     override func update(_ currentTime: TimeInterval) {
         cam.position.x = ball.position.x + 300
         
         if ball.physicsBody?.velocity.dy == 0 {
             canJump = true
         }
-       
-           
-        }
-    
-
-    
-    func jump() {
-        if canJump {
-            ball.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 425))
-            canJump = false
-        }
     }
+    func jump() {
+           if canJump {
+               print("Does this work")
+               ball.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 425))
+               canJump = false
+           }
+       }
 }
-
