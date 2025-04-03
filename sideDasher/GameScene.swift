@@ -54,7 +54,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         if ball.physicsBody?.velocity.dy == 0 {
             canJump = true
         }
-    }
+       // if ball.position.x >= level1End {
+           //     goToNextLevel()
+            }
+    
     func jump() {
            if canJump {
                print("Does this work")
