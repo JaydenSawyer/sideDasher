@@ -54,15 +54,33 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         if ball.physicsBody?.velocity.dy == 0 {
             canJump = true
         }
-       // if ball.position.x >= level1End {
-           //     goToNextLevel()
+        if Int (ball.position.x) >= level1End {
+            goToNextLevel()
+        }
+        
+        
+        
+        func goToNextLevel() {
+            if let view = self.view {
+                if let scene = SKScene(fileNamed: "Level2") {
+                    scene.scaleMode = .aspectFill
+                    if let gameScene = scene as? GameScene {
+                        gameScene.gameViewController = gameViewController
+                        gameViewController?.play = gameScene
+                    }
+                    let transition = SKTransition.fade(withDuration: 1.0)
+                    view.presentScene(scene, transition: transition)
+                }
             }
+        }
+        
+    }
     
     func jump() {
-           if canJump {
-               print("Does this work")
-               ball.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 425))
-               canJump = false
-           }
-       }
+        if canJump {
+            print("Does this work")
+            ball.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 425))
+            canJump = false
+        }
+    }
 }
